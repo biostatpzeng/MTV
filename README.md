@@ -8,24 +8,22 @@ To integrate eQTL mapping study into GWAS, we here proposed a novel statistical 
 **[MTV](https://github.com/biostatpzeng/HMAT/blob/main/HMAT_function.R)** is implemented in R statistical environment.
 
 ## Example
-For GWAS with individual genotyps and phenotype
+For the parameter estimation in MTV
 ```ruby
-source("HMAT_function.R")
-y <- read.table("y.txt",sep=""),head=F)[,1]
-G2 <- read.table("snp_gwas.txt",head=F)
-weight <- matrix(runif(m*7),m,7)
+library(Rcpp)
+library(RcppArmadillo)
+sourceCpp("lmm_pxem.cpp")
+sourceCpp("LRTsim.cpp")
+source("LRTsim.R")
+fit = lmm_pxem(y, X=cbind(1, E),G=snp, PXEM=TRUE, maxIter=1000)
+sb = mean(snp*snp)
+m = dim(snp)[2]
+EB = E*fit$alpha[2]
+sigmat2=c(fit$theta)[2]
+sigmate=c(fit$theta)[1]
+pve = (sb*sigmat2*m + var(EB))/(var(EB) + sb*sigmat2*m + sigmate)
+pge =                 var(EB) /(var(EB) + sb*sigmat2*m)
 
-# Here, we assume, for simplicity, that these simulated weights are estimated from seven various gene expression
-# prediction models. Then, actually, there are seven various TWAS analyses. For each TWAS, we can obtain its p value
-# to evaluate the significance of the gene. Finally, we combine these p values into a single one using HMAT.
-
-HMAT_individual(y,G2,weight,outcome="B")
-
-$p_HMAT
-[1] 0.9125274
-
-$p_TWAS
-[1] 0.9185220 0.8028170 0.7293027 0.9295604 0.7424362 0.9007160 0.9363431
 ```
 
 ## Cite
