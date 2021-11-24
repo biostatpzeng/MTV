@@ -5,7 +5,7 @@ Although several integrative methods have been proposed, how to incorporate eQTL
 
 To integrate eQTL mapping study into GWAS, we here proposed a novel statistical method, called **MTV (Mixed TWAS and mediated Variance estimation)**, by modeling the effects of cis-SNPs of a given gene as a function of eQTL. As would be shown, MTV formulates the eQTL integrative method (e.g., MiST) and individual-level TWAS methods (e.g., prediXcan) within a unified framework through mixed models and includes many prior methods/tests as special cases. We further justified MTV from another two statistical perspectives including mediation analysis and two-stage MR. To efficiently estimate unknown parameters in MTV, we developed a parameter expansion expectation maximum (PX-EM) algorithm that can be scalable to large-scale biobank data. We defined two useful quantities to measure relative genetic contributions of gene expression and its cis-SNPs to phenotypic variance. In addition, a fast and powerful likelihood ratio test method was proposed in MTV to jointly test the total effects of cis-SNPs and gene expression on the phenotype. With extensive simulation studies, we demonstrated that MTV can correctly maintain the type I error rate control when jointly testing the total genetic effects and was often more powerful to identify true association signals across various scenarios compared to existing methods. 
 
-**[MTV](https://github.com/biostatpzeng/HMAT/blob/main/HMAT_function.R)** is implemented in R statistical environment.
+**[MTV](https://github.com/biostatpzeng/MTV)** is implemented in R statistical environment.
 
 ## Example
 For the parameter estimation in MTV
