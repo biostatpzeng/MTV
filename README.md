@@ -30,7 +30,28 @@ pge =                 var(EB) /(var(EB) + sb*sigmat2*m)
 //' @param maxIter  maximum iteration (default is 1000)
 
 ```
+For joint effect test using LRT in MTV
+```ruby
+library(Rcpp)
+library(RcppArmadillo)
+sourceCpp("lmm_pxem.cpp")
+sourceCpp("LRTsim.cpp")
+source("LRTsim.R")
+fit = lmm_pxem(y, X=cbind(1, E), G=snp, PXEM=TRUE, maxIter=1000)
+sb = mean(snp*snp)
+m = dim(snp)[2]
+EB = E*fit$alpha[2]
+sigmat2=c(fit$theta)[2]
+sigmate=c(fit$theta)[1]
+pve = (sb*sigmat2*m + var(EB))/(var(EB) + sb*sigmat2*m + sigmate)
+pge =                 var(EB) /(var(EB) + sb*sigmat2*m)
 
+//' @param y  response variable for GWAS data
+//' @param X  covariates for GWAS data, here GReX should be included
+//' @param G  normalized genotype (cis-SNPs) matrix for GWAS
+//' @param maxIter  maximum iteration (default is 1000)
+
+```
 
 ## Cite
 Ting Wang, Jiahao Qiao, Shuo Zhang, Yongyue Wei and [Ping Zeng](https://github.com/biostatpzeng) (2021). Simultaneous test and estimation of total genetic effect in eQTL integrative analysis through mixed models.
