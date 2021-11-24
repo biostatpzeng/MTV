@@ -15,7 +15,9 @@ library(RcppArmadillo)
 sourceCpp("lmm_pxem.cpp")
 sourceCpp("LRTsim.cpp")
 source("LRTsim.R")
+
 fit = lmm_pxem(y, X=cbind(1, E), G=snp, PXEM=TRUE, maxIter=1000)
+
 sb = mean(snp*snp)
 m = dim(snp)[2]
 EB = E*fit$alpha[2]
@@ -37,19 +39,19 @@ library(RcppArmadillo)
 sourceCpp("lmm_pxem.cpp")
 sourceCpp("LRTsim.cpp")
 source("LRTsim.R")
-fit = lmm_pxem(y, X=cbind(1, E), G=snp, PXEM=TRUE, maxIter=1000)
-sb = mean(snp*snp)
-m = dim(snp)[2]
-EB = E*fit$alpha[2]
-sigmat2=c(fit$theta)[2]
-sigmate=c(fit$theta)[1]
-pve = (sb*sigmat2*m + var(EB))/(var(EB) + sb*sigmat2*m + sigmate)
-pge =                 var(EB) /(var(EB) + sb*sigmat2*m)
+
+fit0 = lm(y~Z)
+fit1 = lmm_pxem(y, X=cbind(1, Z, E), G=G, PXEM=TRUE, maxIter=1000)
+simLike <- eLRT(Z = Z, E = E, G = G, nsim=1e5, parallel=c("multicore"), ncpus = 4L) ## exact LRT
+
+obsLike = c((fit1$loglik - logLik(fit0))*2)
+p1 = mean(simLike >= obsLike)
+p2 = aLRT(simLike, c(1e3,1e4,1e5)) ## approximate LRT
 
 //' @param y  response variable for GWAS data
-//' @param X  covariates for GWAS data, here GReX should be included
+//' @param Z  covariates for GWAS data
+//' @param E  GReX
 //' @param G  normalized genotype (cis-SNPs) matrix for GWAS
-//' @param maxIter  maximum iteration (default is 1000)
 
 ```
 
