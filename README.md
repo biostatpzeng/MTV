@@ -27,8 +27,8 @@ pve = (sb*sigmat2*m + var(EB))/(var(EB) + sb*sigmat2*m + sigmate)
 pge =                 var(EB) /(var(EB) + sb*sigmat2*m)
 
 //' @param y  response variable for GWAS data
-//' @param X  covariates for GWAS data, here GReX should be included
-//' @param G  normalized genotype (cis-SNPs) matrix for GWAS
+//' @param X  covariates for GWAS data, here GReX = Gw should be included, with w the estimated eQTL effect sizes
+//' @param G  genotype (cis-SNPs) matrix for GWAS
 //' @param maxIter  maximum iteration (default is 1000)
 
 ```
@@ -49,9 +49,9 @@ p1 = mean(simLike >= obsLike)
 p2 = aLRT(simLike, c(1e3,1e4,1e5)) ## approximate LRT
 
 //' @param y  response variable for GWAS data
-//' @param Z  covariates for GWAS data
-//' @param E  GReX
-//' @param G  normalized genotype (cis-SNPs) matrix for GWAS
+//' @param Z  covariates for GWAS data, not include the vector of ones
+//' @param E  GReX = Gw is the genetically regulated gene expression
+//' @param G  genotype (cis-SNPs) matrix for GWAS
 
 ```
 
